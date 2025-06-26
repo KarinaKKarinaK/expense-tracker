@@ -39,18 +39,43 @@ function updateTransactionList() {
 
     //add each transaction to teh list
     sortedTransactions.forEach((transaction) => {
-        const transactionEl = createTransactionElement(transaction)
-        transactionListEl.appendChild(transactionEl)
-    })
+        const transactionEl = createTransactionElement(transaction);
+        transactionListEl.appendChild(transactionEl);
+    });
 }
 
 function createTransactionElement(transaction) {
-    const li = document.createElement("li")
-    li.classList.add("transaction")
-    li.classList.add(transaction.amount > 0 ? "income" : "expense")
+    const li = document.createElement("li");
+    li.classList.add("transaction");
+    li.classList.add(transaction.amount > 0 ? "income" : "expense");
 
-    location.innerHTML = `
+    li.innerHTML = `
     <span>${transaction.description}</span>
-    <span>${transaction.amount}</span>
-    `
+    <span>
+
+    ${formatCurrency(transaction.amount)}
+        <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>
+    </span>
+    `;
+
+    return li;
+}
+
+function updateSummary() {
+    // Calculating teh total balance
+
+    const balance = transactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+
+    const income = transactions
+        .filter(transaction => transaction.amount > 0)
+        .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+    const expenses = transactions
+        .filter(transaction => transaction.amount < 0)
+        .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+    // update ui
+    balanceEl.textContent = balance;
+    incomeAmountEl.textContent = income;
+    expenseAmountEl.textContent = expenses;
 }
