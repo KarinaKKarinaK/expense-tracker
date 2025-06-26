@@ -28,7 +28,7 @@ function addTransaction(e) {
     updateTransactionList();
     updateSummary();
 
-    transactionFormEl.requestFullscreen();
+    transactionFormEl.reset();
 }
 
 function updateTransactionList() {
@@ -79,3 +79,24 @@ function updateSummary() {
     incomeAmountEl.textContent = income;
     expenseAmountEl.textContent = expenses;
 }
+
+function formatCurrency(number) {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    }).format(number);
+}
+
+function removeTransaction(id) {
+    // filter out the one we wantd to delete
+    transactions = transactions.filter(transaction => transaction.id !== id);
+
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+
+    updateTransactionList();
+    updateSummary();
+}
+
+// initial render
+updateTransactionList();
+updateSummary();
