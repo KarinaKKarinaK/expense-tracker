@@ -75,9 +75,9 @@ function updateSummary() {
         .reduce((acc, transaction) => acc + transaction.amount, 0);
 
     // update ui
-    balanceEl.textContent = balance;
-    incomeAmountEl.textContent = income;
-    expenseAmountEl.textContent = expenses;
+    balanceEl.textContent = formatCurrency(balance);
+    incomeAmountEl.textContent = formatCurrency(income);
+    expenseAmountEl.textContent = formatCurrency(Math.abs(expenses));
 }
 
 function formatCurrency(number) {
